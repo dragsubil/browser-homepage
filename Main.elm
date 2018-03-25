@@ -1,6 +1,7 @@
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Sections exposing (Section, allSections)
 
 main =
     Html.program
@@ -14,11 +15,6 @@ main =
 
 type alias Model =
     { thing : String }
-
-type alias Section =
-    { title : String
-    , content : List ( String, String )
-    }
 
 type Msg = Reset
 
@@ -49,16 +45,15 @@ view model =
     main_ []
         ( [ h1 [] [ text "Home" ]
           , hr [] []
-          ] ++ (List.map makeSectionItems allSections)
+          ] ++ (List.concat (List.map makeSectionItems allSections))
         )
 
-
-makeSectionItems : Section -> Html msg
+makeSectionItems : Section -> List (Html msg)
 makeSectionItems {title, content} =
-    ul [] ((li [ class "categ" ]
-                [ text title ])
-          :: (List.map makeListItem content))
-        
+   [ ul [] ((li [ class "categ" ] [ text title ])
+           :: (List.map makeListItem content))
+   , hr [] []
+   ]
               
 makeListItem : ( String, String ) -> Html msg
 makeListItem (link, title) =
@@ -66,15 +61,3 @@ makeListItem (link, title) =
         [ a [ href link ] [ text title ] ]
     
 
-allSections : List Section
-allSections =
-    [ programmingSection ]
-        
-programmingSection : Section 
-programmingSection =
-    { title = "Programming"
-    , content = [ ("https://github.com", "github")
-                , ("https://news.ycombinator.com", "hackernews")
-                , ("http://devdocs.io/", "devdocs")
-                ]
-    }
