@@ -11,20 +11,31 @@ body {
   width: 100%;
 }
 
-.boxes {
+.box {
   display: block;
   font-family: 'Roboto';
   position: absolute;
   background: rgba(0,0,0,0.9);
   padding: 1em;
   border-radius: 8px;
+  width: 50%;
 }
 
-.section-box {
+.link-box {
   transform: translate(-50%, -50%);
   top: 45%;
   left: 50%;
 }
+
+.quote-box {
+  transform: translate(-50%, -50%);
+  top: 75%;
+  left: 50%;
+  color: #aab;
+  text-align: center;
+  font-style: italic;
+}
+
 
 
 h1 {
@@ -39,13 +50,11 @@ hr {
   border: 0;
   border-top: 1px solid #70838c;
   opacity: .4;
-  width: 700px;
 }
 
 ul {
   display: block;
   margin: 0 auto;
-  width: 700px;
 }
 
 li {

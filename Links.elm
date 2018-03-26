@@ -1,4 +1,4 @@
-module Section exposing (sectionBox)
+module Links exposing (linkBox)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -8,12 +8,13 @@ type alias Section =
     , content : List ( String, String )
     }
 
-sectionBox : List (Html msg)
-sectionBox =
-    ( [ h1 [] [ text "Home" ]
-      , hr [] []
-      ] ++ (List.concat (List.map makeSectionItems allSections))
-    )
+linkBox : List (Html msg)
+linkBox =
+    [ div [ class "box link-box" ] (
+                                    [ h1 [] [ text "Home" ]
+                                    , hr [] []
+                                    ] ++ (List.concat (List.map makeSectionItems allSections)))
+    ]
 
 makeSectionItems : Section -> List (Html msg)
 makeSectionItems {title, content} =

@@ -1,6 +1,6 @@
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Section exposing (sectionBox)
+import Links exposing (linkBox)
 import Quotes exposing (quoteBox)
 
 
@@ -43,8 +43,6 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    main_ []
-        [ div [ class "boxes section-box" ] (List.concat [ sectionBox, quoteBox ])
-        ]
+    main_ [] (List.concat [ linkBox, (quoteBox "really long placeholder quote must be replaced") ])
 
 
