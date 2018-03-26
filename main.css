@@ -29,14 +29,12 @@ body {
 
 .quote-box {
   transform: translate(-50%, -50%);
-  top: 75%;
+  top: 85%;
   left: 50%;
   color: #aab;
   text-align: center;
   font-style: italic;
 }
-
-
 
 h1 {
   color: #99736e;

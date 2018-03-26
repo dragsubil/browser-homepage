@@ -9092,25 +9092,57 @@ var _user$project$Links$Section = F2(
 		return {title: a, content: b};
 	});
 
-var _user$project$Quotes$quoteBox = function (quote) {
-	return {
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('box quote-box'),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(quote),
-				_1: {ctor: '[]'}
-			}),
-		_1: {ctor: '[]'}
-	};
-};
-
+var _user$project$Main$quoteAuthorDecode = A2(
+	_elm_lang$core$Json_Decode$field,
+	'contents',
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'quotes',
+		A2(
+			_elm_lang$core$Json_Decode$index,
+			0,
+			A2(_elm_lang$core$Json_Decode$field, 'author', _elm_lang$core$Json_Decode$string))));
+var _user$project$Main$quoteStringDecode = A2(
+	_elm_lang$core$Json_Decode$field,
+	'contents',
+	A2(
+		_elm_lang$core$Json_Decode$field,
+		'quotes',
+		A2(
+			_elm_lang$core$Json_Decode$index,
+			0,
+			A2(_elm_lang$core$Json_Decode$field, 'quote', _elm_lang$core$Json_Decode$string))));
+var _user$project$Main$quoteBox = F2(
+	function (quote, author) {
+		return {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('box quote-box'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(quote),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$br,
+							{ctor: '[]'},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], '- ', author)),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		};
+	});
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$main_,
@@ -9121,7 +9153,7 @@ var _user$project$Main$view = function (model) {
 				_0: _user$project$Links$linkBox,
 				_1: {
 					ctor: '::',
-					_0: _user$project$Quotes$quoteBox('really long placeholder quote must be replaced'),
+					_0: A2(_user$project$Main$quoteBox, model.quote, model.author),
 					_1: {ctor: '[]'}
 				}
 			}));
@@ -9132,15 +9164,43 @@ var _user$project$Main$subscriptions = function (model) {
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		if (_p0.ctor === 'Reset') {
+			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			if (_p0._0.ctor === 'Ok') {
+				var _p1 = _p0._0._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{quote: _p1.quote, author: _p1.author}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
 	});
-var _user$project$Main$Model = function (a) {
-	return {thing: a};
+var _user$project$Main$Model = F2(
+	function (a, b) {
+		return {quote: a, author: b};
+	});
+var _user$project$Main$Quote = F2(
+	function (a, b) {
+		return {quote: a, author: b};
+	});
+var _user$project$Main$quoteDecoder = A3(_elm_lang$core$Json_Decode$map2, _user$project$Main$Quote, _user$project$Main$quoteStringDecode, _user$project$Main$quoteAuthorDecode);
+var _user$project$Main$NewQuote = function (a) {
+	return {ctor: 'NewQuote', _0: a};
 };
+var _user$project$Main$getQuote = function () {
+	var request = A2(_elm_lang$http$Http$get, 'http://quotes.rest/qod.json', _user$project$Main$quoteDecoder);
+	return A2(_elm_lang$http$Http$send, _user$project$Main$NewQuote, request);
+}();
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: _user$project$Main$Model('Hello'),
-	_1: _elm_lang$core$Platform_Cmd$none
+	_0: A2(_user$project$Main$Model, '', ''),
+	_1: _user$project$Main$getQuote
 };
 var _user$project$Main$main = _elm_lang$html$Html$program(
 	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
