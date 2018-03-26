@@ -1,11 +1,32 @@
-module Sections exposing (Section, allSections)
+module Section exposing (sectionBox)
 
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 type alias Section =
     { title : String
     , content : List ( String, String )
     }
 
+sectionBox : List (Html msg)
+sectionBox =
+    ( [ h1 [] [ text "Home" ]
+      , hr [] []
+      ] ++ (List.concat (List.map makeSectionItems allSections))
+    )
+
+makeSectionItems : Section -> List (Html msg)
+makeSectionItems {title, content} =
+   [ ul [] ((li [ class "categ" ] [ text title ])
+           :: (List.map makeListItem content))
+   , hr [] []
+   ]
+              
+makeListItem : ( String, String ) -> Html msg
+makeListItem (link, title) =
+    li []
+        [ a [ href link ] [ text title ] ]
+    
 allSections : List Section
 allSections =
     [ { title = "Programming"

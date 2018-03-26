@@ -1,7 +1,8 @@
 import Html exposing (..)
-import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Sections exposing (Section, allSections)
+import Section exposing (sectionBox)
+import Quotes exposing (quoteBox)
+
 
 main =
     Html.program
@@ -43,21 +44,7 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     main_ []
-        ( [ h1 [] [ text "Home" ]
-          , hr [] []
-          ] ++ (List.concat (List.map makeSectionItems allSections))
-        )
+        [ div [ class "boxes section-box" ] (List.concat [ sectionBox, quoteBox ])
+        ]
 
-makeSectionItems : Section -> List (Html msg)
-makeSectionItems {title, content} =
-   [ ul [] ((li [ class "categ" ] [ text title ])
-           :: (List.map makeListItem content))
-   , hr [] []
-   ]
-              
-makeListItem : ( String, String ) -> Html msg
-makeListItem (link, title) =
-    li []
-        [ a [ href link ] [ text title ] ]
-    
 
