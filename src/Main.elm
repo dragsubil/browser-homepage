@@ -15,15 +15,15 @@ main =
 -- MODEL
 
 type alias Model =
-    { thing : String }
+    { quote : String }
 
-type Msg = Reset
+type Msg = Reset | Quotes.Msg | Quotes.NewQuote (Result Http.Error String)
 
 -- INIT
 
 init : (Model, Cmd Msg)
 init =
-    (Model "Hello", Cmd.none)
+    (Model "Hello", Quotes.getQuote)
 
     
 -- UPDATE
@@ -32,6 +32,8 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Reset -> (model, Cmd.none)
+        Quotes.NewQuote (Ok quote) -> ({ model | quote = quote }, Cmd.none) 
+        Quotes.NewQuote (Err _) -> (model, Cmd.none) 
 
 -- SUBSCRIPTIONS
 
