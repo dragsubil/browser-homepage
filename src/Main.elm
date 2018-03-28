@@ -49,8 +49,13 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    main_ [] (List.concat [ linkBox
-                          , (quoteBox model.quote model.author) ])
+    main_ [] (List.concat
+                  [ linkBox
+                  , (quoteBox model.quote model.author)
+                  ]
+             )
+
+
 
 -- QUOTES FUNCTIONS
 
